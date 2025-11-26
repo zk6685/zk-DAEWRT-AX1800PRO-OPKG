@@ -1,5 +1,8 @@
-# OpenWRT-CI 
-京东云亚瑟AX1800pro专属固件包。
+# OpenWRT-CI Stable版
+京东云亚瑟AX1800pro专属固件包
+有何变化？
+1.源代码切换为openwrt24.10
+2.重回opkg包管理器
 代码来自Davidtall、VIKINGYFY。
 适度精简，确保最大性能发挥，开启内核eBPF，Dae吃鹅优选，建议硬改1GB内存的使用。
 刷机前请更换分区表和uboot,参考链接: https://www.right.com.cn/forum/thread-8402269-1-1.html            
