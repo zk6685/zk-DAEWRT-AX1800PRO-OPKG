@@ -121,6 +121,12 @@ function set_kernel_size() {
   sed -i "/^define Device\/jdcloud_re-cs-07/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" $image_file
   sed -i "/^define Device\/redmi_ax5-jdcloud/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" $image_file
   sed -i "/^define Device\/linksys_mr/,/^endef/ { /KERNEL_SIZE := 8192k/s//KERNEL_SIZE := 12288k/ }" $image_file
+  
+  # 新增：修改 link_nn6000-v2 的内核大小为12M（根据原数值调整匹配值）
+  # 若原 KERNEL_SIZE 是 6144k，用这行：
+  sed -i "/^define Device\/link_nn6000-v2/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" $image_file
+  # 若原 KERNEL_SIZE 是 8192k，替换为这行：
+  # sed -i "/^define Device\/link_nn6000-v2/,/^endef/ { /KERNEL_SIZE := 8192k/s//KERNEL_SIZE := 12288k/ }" $image_file
 }
 #开启内存回收补丁
 function enable_skb_recycler() {
