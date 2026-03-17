@@ -121,12 +121,24 @@ function set_kernel_size() {
   sed -i "/^define Device\/jdcloud_re-cs-07/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" $image_file
   sed -i "/^define Device\/redmi_ax5-jdcloud/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" $image_file
   sed -i "/^define Device\/linksys_mr/,/^endef/ { /KERNEL_SIZE := 8192k/s//KERNEL_SIZE := 12288k/ }" $image_file
-  
-  # 新增：修改 link_nn6000-v2 的内核大小为12M（根据原数值调整匹配值）
-  # 若原 KERNEL_SIZE 是 6144k，用这行：
-  sed -i "/^define Device\/link_nn6000-v2/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" $image_file
-  # 若原 KERNEL_SIZE 是 8192k，替换为这行：
-  # sed -i "/^define Device\/link_nn6000-v2/,/^endef/ { /KERNEL_SIZE := 8192k/s//KERNEL_SIZE := 12288k/ }" $image_file
+
+  # 新增1：在 ipq60xx.mk 中添加 link_nn6000-v2 的设备定义（按需调整其他参数）
+  cat >> $image_file <<EOF
+
+# Link NN6000-V2 设备定义
+define Device/link_nn6000-v2
+  \$(Device/default-nand)
+  KERNEL_SIZE := 12288k  # 直接设置12M内核
+  IMAGE_SIZE := 12288k   # 可选：同步设置固件总大小为12M
+  DEVICE_VENDOR := Link
+  DEVICE_MODEL := NN6000-V2
+  DEVICE_PACKAGES := kmod-usb2 kmod-usb3  # 按需添加驱动
+endef
+TARGET_DEVICES += link_nn6000-v2
+EOF
+
+  # 新增2：兜底替换（防止手动定义时KERNEL_SIZE不一致）
+  sed -i "/^define Device\/link_nn6000-v2/,/^endef/ { /KERNEL_SIZE := /s//KERNEL_SIZE := 12288k/ }" $image_file
 }
 #开启内存回收补丁
 function enable_skb_recycler() {
